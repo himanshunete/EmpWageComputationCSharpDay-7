@@ -1,5 +1,8 @@
 ﻿using EmpWageComputationPart4;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EmpWageComputationPart4
 {
@@ -47,26 +50,30 @@ namespace EmpWageComputationPart4
         public const int IS_FULL_TIME = 1;
         public const int IS_PART_TIME = 0;
 
-        int numOfCompany = 0;
-        CompanyEmpWage[] companyEmpWageArray;
-        
+
+        ArrayList companyEmpWageList;
+        Dictionary<string, CompanyEmpWage> companyEmpWageMap;
+
         public EmpWageBuilder()
         {
-            companyEmpWageArray = new CompanyEmpWage[3];
+            companyEmpWageList = new ArrayList();
+            companyEmpWageMap = new Dictionary<string, CompanyEmpWage>();
         }
 
         public void AddCompanyWage(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime)
         {
-            companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxNumOfHours, empHrsFullTime, empHrsPartTime);
-            numOfCompany++;
+            CompanyEmpWage companyEmpWage = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxNumOfHours, empHrsFullTime, empHrsPartTime);
+            companyEmpWageList.Add(companyEmpWage);
+            companyEmpWageMap.Add(company, companyEmpWage);
         }
 
         public void ComputeWage()
         {
-            for (int i = 0; i < numOfCompany; i++)
+            for (int i = 0; i < companyEmpWageList.Count; i++)
             {
-                companyEmpWageArray[i].setTotalEmpWage(this.CalculateWage(companyEmpWageArray[i]));
-                Console.WriteLine(companyEmpWageArray[i]);
+                CompanyEmpWage companyEmpWage = (CompanyEmpWage)companyEmpWageList[i];
+                companyEmpWage.setTotalEmpWage(this.CalculateWage(companyEmpWage));
+                Console.WriteLine(companyEmpWage);
             }
         }
 
@@ -75,7 +82,6 @@ namespace EmpWageComputationPart4
             Console.WriteLine("Welcome To Employee Wage Computation Program");
 
             //Variable
-            int totalEmpWage = 0;
             int totalEmpHrs = 0;
             int totalWorkingDays = 0;
             int empHrs;
@@ -102,10 +108,10 @@ namespace EmpWageComputationPart4
                         break;
                 }
                 empWage = empHrs * companyEmpWage.empRatePerHour;
-                totalEmpWage += empWage;
+                companyEmpWage.totalEmpWage += empWage;
                 Console.WriteLine(" Emp Daily Wage: " + empWage);
             }
-            return totalEmpWage;
+            return companyEmpWage.totalEmpWage;
         }
 
     }
