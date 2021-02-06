@@ -122,6 +122,8 @@ namespace EmpWageComputationPart4
         
             }
             totalEmpWageList.Add(totalEmpWage);
+            totalEmpWageMap.Add(companyEmpWage.company, totalEmpWage);
+
             return totalEmpWage;
         }
 
@@ -131,6 +133,12 @@ namespace EmpWageComputationPart4
             {
                 Console.WriteLine(" Companies Total Emp Wage is: " + totalEmpWageList[i]);
             }  
+        }
+
+        // Get Total Wage when quered by Company
+        public void GetTotalWage(string company)
+        {
+            Console.WriteLine(totalEmpWageMap[company]);
         }
     }
 
@@ -144,6 +152,7 @@ namespace EmpWageComputationPart4
             empWageBuilder.AddCompanyWage("Ferrari", 30, 18, 90, 7, 4);
             empWageBuilder.ComputeWage();
             empWageBuilder.TotalEmpWage();
+            empWageBuilder.GetTotalWage("Audi");
 
         }
 
