@@ -153,7 +153,6 @@ namespace EmpWageComputationPart4
             empWageBuilder.ComputeWage();
             empWageBuilder.TotalEmpWage();
             empWageBuilder.GetTotalWage("Audi");
-
         }
 
     }
