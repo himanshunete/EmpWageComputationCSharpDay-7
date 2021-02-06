@@ -3,20 +3,17 @@ using System;
 
 namespace EmpWageComputationPart4
 {
-    class EmpWageBuilder
+    class CompanyEmpWage
     {
-        //Constant
-        public const int IS_FULL_TIME = 1;
-        public const int IS_PART_TIME = 0;
+        public string company;
+        public int empRatePerHour;
+        public int numOfWorkingDays;
+        public int maxNumOfHours;
+        public int empHrsFullTime;
+        public int empHrsPartTime;
+        public int totalEmpWage;
 
-        private string company;
-        private int empRatePerHour;
-        private int numOfWorkingDays;
-        private int maxNumOfHours;
-        private int empHrsFullTime;
-        private int empHrsPartTime;
-
-        public EmpWageBuilder(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime)
+        public CompanyEmpWage(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime)
         {
             this.company = company;
             this.empRatePerHour = empRatePerHour;
@@ -26,10 +23,48 @@ namespace EmpWageComputationPart4
             this.empHrsPartTime = empHrsPartTime;
 
         }
+        public void setTotalEmpWage(int totalEmpWage)
+        {
+            this.totalEmpWage = totalEmpWage;
+        }
+        public String toString()
+        {
+            return "Total Emp Wage for Company: " + company + " is: " + totalEmpWage;
+        }
 
 
-        // Class Method
-        public void CalculateWage()
+    }
+
+    class EmpWageBuilder
+    {
+        //Constant
+        public const int IS_FULL_TIME = 1;
+        public const int IS_PART_TIME = 0;
+
+        int numOfCompany = 0;
+        CompanyEmpWage[] companyEmpWageArray;
+        
+        public EmpWageBuilder()
+        {
+            companyEmpWageArray = new CompanyEmpWage[3];
+        }
+
+        public void AddCompany(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime)
+        {
+            companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxNumOfHours, empHrsFullTime, empHrsPartTime);
+            numOfCompany++;
+        }
+
+        public void ComputeWage()
+        {
+            for (int i = 0; i < numOfCompany; i++)
+            {
+                companyEmpWageArray[i].setTotalEmpWage(this.CalculateWage(companyEmpWageArray[i]));
+                Console.WriteLine(companyEmpWageArray[i]);
+            }
+        }
+
+        public int CalculateWage(CompanyEmpWage companyEmpWage)
         {
             Console.WriteLine("Welcome To Employee Wage Computation Program");
 
@@ -42,7 +77,7 @@ namespace EmpWageComputationPart4
             Random rand = new Random();
 
             //Computation
-            while (totalEmpHrs <= maxNumOfHours && totalWorkingDays <= numOfWorkingDays)
+            while (totalEmpHrs <= companyEmpWage.maxNumOfHours && totalWorkingDays <= companyEmpWage.numOfWorkingDays)
             {
                 totalEmpHrs++;
                 totalWorkingDays++;
@@ -51,20 +86,20 @@ namespace EmpWageComputationPart4
                 switch (workingTime)
                 {
                     case IS_FULL_TIME:
-                        empHrs = empHrsFullTime;
+                        empHrs = companyEmpWage.empHrsFullTime;
                         break;
                     case IS_PART_TIME:
-                        empHrs = empHrsPartTime;
+                        empHrs = companyEmpWage.empHrsPartTime;
                         break;
                     default:
                         empHrs = 0;
                         break;
                 }
-                empWage = empHrs * empRatePerHour;
+                empWage = empHrs * companyEmpWage.empRatePerHour;
                 totalEmpWage += empWage;
                 Console.WriteLine(" Emp Daily Wage: " + empWage);
             }
-            Console.WriteLine("Emp Total Wage of " + company + " is: " + totalEmpWage + " Rs");
+            return totalEmpWage;
         }
 
     }
@@ -73,12 +108,11 @@ namespace EmpWageComputationPart4
     { 
         static void Main(string[] args)
         {
-            EmpWageBuilder company1 = new EmpWageBuilder("Audi", 20, 25, 100, 8, 4);
-            EmpWageBuilder company2 = new EmpWageBuilder("BMW", 25, 20, 100, 9, 2);
-            EmpWageBuilder company3 = new EmpWageBuilder("Ferrari", 30, 18, 90, 7, 4);
-            company1.CalculateWage();
-            company2.CalculateWage();
-            company3.CalculateWage();
+            EmpWageBuilder empWageBuilder = new EmpWageBuilder();
+            empWageBuilder.AddCompany("Audi", 20, 25, 100, 8, 4);
+            empWageBuilder.AddCompany("BMW", 25, 20, 100, 9, 2);
+            empWageBuilder.AddCompany("Ferrari", 30, 18, 90, 7, 4);
+            empWageBuilder.ComputeWage();
         }
 
     }
