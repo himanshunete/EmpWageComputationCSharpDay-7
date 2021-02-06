@@ -3,6 +3,12 @@ using System;
 
 namespace EmpWageComputationPart4
 {
+
+    interface ICompanyEmpWage
+    {
+        public void AddCompanyWage(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime);
+        public void ComputeWage();
+    }
     class CompanyEmpWage
     {
         public string company;
@@ -35,7 +41,7 @@ namespace EmpWageComputationPart4
 
     }
 
-    class EmpWageBuilder
+    class EmpWageBuilder : ICompanyEmpWage
     {
         //Constant
         public const int IS_FULL_TIME = 1;
@@ -49,7 +55,7 @@ namespace EmpWageComputationPart4
             companyEmpWageArray = new CompanyEmpWage[3];
         }
 
-        public void AddCompany(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime)
+        public void AddCompanyWage(string company, int empRatePerHour, int numOfWorkingDays, int maxNumOfHours, int empHrsFullTime, int empHrsPartTime)
         {
             companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxNumOfHours, empHrsFullTime, empHrsPartTime);
             numOfCompany++;
@@ -109,9 +115,9 @@ namespace EmpWageComputationPart4
         static void Main(string[] args)
         {
             EmpWageBuilder empWageBuilder = new EmpWageBuilder();
-            empWageBuilder.AddCompany("Audi", 20, 25, 100, 8, 4);
-            empWageBuilder.AddCompany("BMW", 25, 20, 100, 9, 2);
-            empWageBuilder.AddCompany("Ferrari", 30, 18, 90, 7, 4);
+            empWageBuilder.AddCompanyWage("Audi", 20, 25, 100, 8, 4);
+            empWageBuilder.AddCompanyWage("BMW", 25, 20, 100, 9, 2);
+            empWageBuilder.AddCompanyWage("Ferrari", 30, 18, 90, 7, 4);
             empWageBuilder.ComputeWage();
         }
 
