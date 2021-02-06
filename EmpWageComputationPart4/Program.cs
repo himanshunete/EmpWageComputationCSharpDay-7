@@ -36,6 +36,11 @@ namespace EmpWageComputationPart4
         {
             this.totalEmpWage = totalEmpWage;
         }
+
+        public int getTotalWage()
+        {
+            return totalEmpWage;
+        }
         public String toString()
         {
             return "Total Emp Wage for Company: " + company + " is: " + totalEmpWage;
@@ -53,6 +58,8 @@ namespace EmpWageComputationPart4
 
         ArrayList companyEmpWageList;
         Dictionary<string, CompanyEmpWage> companyEmpWageMap;
+        ArrayList totalEmpWageList = new ArrayList();
+        Dictionary<string, int> totalEmpWageMap = new Dictionary<string, int>();
 
         public EmpWageBuilder()
         {
@@ -86,6 +93,7 @@ namespace EmpWageComputationPart4
             int totalWorkingDays = 0;
             int empHrs;
             int empWage;
+            int totalEmpWage = 0;
             Random rand = new Random();
 
             //Computation
@@ -108,12 +116,22 @@ namespace EmpWageComputationPart4
                         break;
                 }
                 empWage = empHrs * companyEmpWage.empRatePerHour;
-                companyEmpWage.totalEmpWage += empWage;
+
+                totalEmpWage += empWage;
                 Console.WriteLine(" Emp Daily Wage: " + empWage);
+        
             }
-            return companyEmpWage.totalEmpWage;
+            totalEmpWageList.Add(totalEmpWage);
+            return totalEmpWage;
         }
 
+        public void TotalEmpWage()
+        {
+            for (int i = 0; i < totalEmpWageList.Count; i++)
+            {
+                Console.WriteLine(" Companies Total Emp Wage is: " + totalEmpWageList[i]);
+            }  
+        }
     }
 
     class Program 
@@ -125,6 +143,8 @@ namespace EmpWageComputationPart4
             empWageBuilder.AddCompanyWage("BMW", 25, 20, 100, 9, 2);
             empWageBuilder.AddCompanyWage("Ferrari", 30, 18, 90, 7, 4);
             empWageBuilder.ComputeWage();
+            empWageBuilder.TotalEmpWage();
+
         }
 
     }
